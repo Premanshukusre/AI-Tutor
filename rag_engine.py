@@ -7,9 +7,19 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 print("Loading local embedding model (sentence-transformers)...")
 embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 
-print("Loading local synthesis model (FLAN-T5-small)...")
-tokenizer = AutoTokenizer.from_pretrained('google/flan-t5-small')
-seq2seq_model = AutoModelForSeq2SeqLM.from_pretrained('google/flan-t5-small')
+tokenizer = None
+seq2seq_model = None
+
+
+def get_local_model():
+    global tokenizer, seq2seq_model
+
+    if tokenizer is None or seq2seq_model is None:
+        print("Loading local synthesis model (FLAN-T5-small)...")
+        tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
+        seq2seq_model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
+
+    return tokenizer, seq2seq_model
 
 document_store: Dict[str, Dict[str, Any]] = {}
 
@@ -251,8 +261,14 @@ def synthesize_grounded_answer(query: str, resolved_query: str, context_chunks: 
     )
     
     try:
+        tokenizer, seq2seq_model = get_local_model()
         inputs = tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True)
-        outputs = seq2seq_model.generate(**inputs, max_new_tokens=120, temperature=0.2, do_sample=False)
+        outputs = seq2seq_model.generate(
+            **inputs,
+            max_new_tokens=120,
+            temperature=0.2,
+            do_sample=False
+        )
         model_output = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
     except Exception:
         model_output = ""
