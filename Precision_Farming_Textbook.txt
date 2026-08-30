@@ -1,0 +1,29 @@
+# Precision Agriculture & IoT Technologies
+Department of Agricultural Engineering
+
+## Chapter 1: Introduction to Precision Farming
+Precision farming (also known as precision agriculture) is a modern technology-enabled farm management strategy that uses sensors, GPS, satellite imagery, and IoT devices to observe, measure, and respond to inter-field and intra-field variability in crops and soil.
+
+Why is precision farming needed?
+Precision farming is needed because traditional agriculture treats an entire field uniformly, leading to over-application or under-application of resources. Precision farming is needed to optimize resource usage (such as water, fertilizers, and pesticides), increase overall crop yield, reduce operational input costs, and minimize environmental pollution by managing spatial and temporal field variability.
+
+Difference Between Traditional Farming and Precision Farming:
+Traditional farming applies uniform amounts of water, seeds, and fertilizers across the entire farm based on static calendars or intuition. In contrast, precision farming uses real-time data from field sensors, drones, and satellite maps to tailor irrigation, fertilization, and pest control to the specific needs of smaller zones within the field.
+
+## Chapter 2: IoT Sensors and Wireless Communication Protocols
+Internet of Things (IoT) technology plays a pivotal role in modern precision farming by deploying wireless sensor nodes across farmland. IoT helps precision farming by continuously collecting real-time field data—such as soil moisture levels, ambient temperature, humidity, and solar radiation—and transmitting this data to automated irrigation and monitoring systems.
+
+### LoRaWAN Protocol in Agriculture
+LoRaWAN (Low Power, Wide Area Networking) is a long-range, low-power wireless communication protocol designed specifically for connecting battery-operated sensors in Internet of Things (IoT) applications.
+
+Why is LoRaWAN useful here?
+LoRaWAN is useful in precision farming because agricultural fields often span vast rural areas without cellular coverage or power grid infrastructure. LoRaWAN operates on sub-GHz frequencies, enabling sensor nodes to transmit wireless signals over distances of up to 10–15 kilometers across open fields while consuming extremely low power, allowing sensors to run for years on small batteries.
+
+Data Suitability and Bandwidth Capabilities:
+LoRaWAN is designed for transmitting small, low-bandwidth data payloads (such as periodic soil moisture readings, temperature measurements, or sensor status alerts). Because it uses a narrow bandwidth to maximize range and battery life, LoRaWAN is NOT suitable for transmitting high-bandwidth sensor data, video streams, or large data files.
+
+## Chapter 3: Review & Self-Assessment
+Review Questions:
+Q1. What is precision farming and why is it needed in modern agriculture?
+Q2. Explain the difference between traditional farming and precision farming.
+Q3. What is LoRaWAN and what kind of data is it suitable for transmitting?
