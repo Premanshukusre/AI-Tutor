@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor - Textbook & Document Q&A Assistant</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation & Library -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="brand-title">
+                    <h1>AI Tutor</h1>
+                    <span class="brand-subtitle">Textbook Q&A Assistant</span>
+                </div>
+            </div>
+
+            <!-- Upload Area -->
+            <div class="upload-section">
+                <h2 class="section-label">Upload Textbook / Document</h2>
+                <div class="upload-dropzone" id="dropzone">
+                    <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.md" class="file-input">
+                    <div class="dropzone-content">
+                        <div class="upload-icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <p class="upload-text"><strong>Click to upload</strong> or drag & drop</p>
+                        <p class="upload-formats">Supports PDF, DOCX, TXT</p>
+                    </div>
+                </div>
+                <div class="upload-progress hidden" id="uploadProgress">
+                    <div class="spinner"></div>
+                    <span id="uploadStatusText">Extracting text & indexing...</span>
+                </div>
+            </div>
+
+            <!-- Document Library -->
+            <div class="library-section">
+                <div class="library-header">
+                    <h2 class="section-label"><i class="fa-solid fa-book-bookmark"></i> My Documents</h2>
+                    <span class="doc-count-badge" id="docCount">0</span>
+                </div>
+                <div class="doc-list" id="docList">
+                    <div class="empty-docs">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <p>No documents uploaded yet. Upload a PDF, DOCX, or TXT file to start studying.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pre-loaded Sample Docs Button -->
+            <div class="sample-section">
+                <button class="btn-secondary full-width" id="btnLoadSample">
+                    <i class="fa-solid fa-file-signature"></i> Load Sample Computer Science Textbook
+                </button>
+            </div>
+            
+            <footer class="sidebar-footer">
+                <span><i class="fa-solid fa-shield-halved"></i> Isolated Document Context</span>
+            </footer>
+        </aside>
+
+        <!-- Main Workspace / Chat Panel -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="top-header">
+                <div class="active-doc-info" id="activeDocInfo">
+                    <div class="active-doc-icon">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div class="active-doc-meta">
+                        <span class="active-doc-label">Active Document:</span>
+                        <h2 class="active-doc-name" id="activeDocName">No Document Selected</h2>
+                    </div>
+                    <div class="doc-status-badge inactive" id="docStatusBadge">Select a document</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-ghost" id="btnClearChat" title="Clear Chat History">
+                        <i class="fa-solid fa-rotate-left"></i> Clear Chat
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Container -->
+            <div class="chat-container" id="chatContainer">
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-card">
+                        <div class="welcome-icon">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <h2>Welcome to AI Tutor!</h2>
+                        <p>Upload a textbook or reference document to ask natural-language questions and receive grounded answers backed by specific page & section citations.</p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fa-solid fa-crosshair"></i>
+                                <div>
+                                    <h4>Grounded Answers</h4>
+                                    <p>Answers are derived strictly from your uploaded document.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-quote-right"></i>
+                                <div>
+                                    <h4>Exact Page Citations</h4>
+                                    <p>Every response shows the exact source pages and text snippets used.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-lock"></i>
+                                <div>
+                                    <h4>Document Isolation</h4>
+                                    <p>Information from other files is never mixed or leaked.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages"></div>
+            </div>
+
+            <!-- Quick Suggestions Bar -->
+            <div class="suggestions-bar hidden" id="suggestionsBar">
+                <span class="suggestions-label">Try asking:</span>
+                <div class="suggestions-chips" id="suggestionsChips">
+                    <button class="chip" data-prompt="What is the main topic explained in this document?">Main Topic</button>
+                    <button class="chip" data-prompt="Why is this concept important according to the document?">Why is this important?</button>
+                    <button class="chip" data-prompt="Compare the main concepts described in the text.">Compare Concepts</button>
+                    <button class="chip" data-prompt="What are quantum gravity and black hole thermodynamics?">Out-of-bounds Test</button>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="input-area">
+                <form class="chat-form" id="chatForm">
+                    <div class="input-wrapper">
+                        <textarea id="questionInput" placeholder="Ask a question about the active document..." rows="1" disabled></textarea>
+                        <button type="submit" class="btn-send" id="btnSend" disabled title="Send Question">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="input-footer">
+                    <span>Press <strong>Enter</strong> to send, <strong>Shift + Enter</strong> for line break.</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
