@@ -1,1 +1,21 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
 
+# Database & ORM
+sqlalchemy
+
+# Document Processing
+pypdf
+python-docx
+python-pptx
+
+# Vector Database & Retrieval
+chromadb
+sentence-transformers
+
+# Local AI / NLP
+transformers
+torch
