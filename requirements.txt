@@ -18,4 +18,7 @@ sentence-transformers
 
 # Local AI / NLP
 transformers
+
+# CPU-only PyTorch
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch
